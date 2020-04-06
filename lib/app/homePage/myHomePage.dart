@@ -42,15 +42,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   suffixIcon: IconButton(
                     icon: Icon(Icons.clear, color: Colors.white),
                     onPressed: () {
-                      if(_textController.text.isNotEmpty){
+                      if (_textController.text.isNotEmpty) {
                         _textController.clear();
                         setState(() {
                           _giphyApi.search("");
                         });
                       }
                     },
-                  )
-              ),
+                  )),
               style: TextStyle(color: Colors.white, fontSize: 18),
               textAlign: TextAlign.center,
               onSubmitted: (text) {
