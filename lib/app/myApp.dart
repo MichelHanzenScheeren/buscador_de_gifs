@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:buscadordegifs/app/homePage/HomePage.dart';
+import 'package:buscadordegifs/app/homePage/myHomePage.dart';
 
 class MyApp extends StatelessWidget {
   @override

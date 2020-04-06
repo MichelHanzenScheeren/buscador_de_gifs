@@ -1,3 +1,4 @@
+import 'package:buscadordegifs/app/gifPage/myGifPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -22,14 +23,6 @@ class _MyHomePageState extends State<MyHomePage> {
           "https://api.giphy.com/v1/gifs/search?api_key=MHNHi4nQy2AEQfeW23BVysMSNRBzecCj&q=$_search&limit=19&offset=$_offset&rating=G&lang=pt");
     }
     return json.decode(response.body);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _getGifs().then((data) {
-      print(data);
-    });
   }
 
   @override
@@ -129,7 +122,13 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Image.network(
                   snapshot.data["data"][index]["images"]["fixed_height"]["url"],
                   height: 400,
-                  fit: BoxFit.fill),
+                  fit: BoxFit.cover),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(
+                      builder: (context) => MyGifPage(snapshot.data["data"][index]),
+                    ));
+              },
             );
           } else {
             return GestureDetector(
