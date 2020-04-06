@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:share/share.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -108,12 +109,20 @@ class _MyHomePageState extends State<MyHomePage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text(
-          "Oh, we had a problem!\nCheck your internet and try again... ",
-          style: TextStyle(color: Colors.red, fontSize: 20),
+          "Ah não, tivemos um problema!\nVerifique sua conexão com a internet... ",
+          style: TextStyle(color: Colors.red, fontSize: 18),
           textAlign: TextAlign.center,
         ),
         Divider(),
-        Icon(Icons.error_outline, color: Colors.red, size: 80),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Image.asset("assets/images/connection_failed.gif"),
+        ),
+        Divider(),
+        IconButton(
+          icon: Icon(Icons.refresh, color: Colors.white, size: 40),
+          onPressed: _refresh,
+        )
       ],
     );
   }
@@ -127,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
           if (index < snapshot.data["data"].length) {
             return GestureDetector(
               child: Image.network(
-                  snapshot.data["data"][index]["images"]["fixed_height"]["url"],
+                  snapshot.data["data"][index]["images"]["preview_gif"]["url"],
                   height: 400,
                   fit: BoxFit.cover),
               onTap: () {
@@ -135,6 +144,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     MaterialPageRoute(
                       builder: (context) => MyGifPage(snapshot.data["data"][index]),
                     ));
+              },
+              onLongPress: () {
+                Share.share(snapshot.data["data"][index]["images"]["original"]["url"]);
               },
             );
           } else {
