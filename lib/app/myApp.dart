@@ -7,6 +7,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Buscador de GIFS",
       home: MyHomePage(),
+      theme: ThemeData(
+        hintColor: Colors.white,
+        inputDecorationTheme: InputDecorationTheme(
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
+        ),
+      ),
     );
   }
 }
