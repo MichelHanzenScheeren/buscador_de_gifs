@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:share/share.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -61,14 +62,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Divider(),
             Expanded(
-              child: RefreshIndicator(
-                onRefresh: _refresh,
-                child: FutureBuilder(
-                  future: _getGifs(),
-                  builder: _buildBody,
-                ),
-              )
-            )
+                child: RefreshIndicator(
+              onRefresh: _refresh,
+              child: FutureBuilder(
+                future: _getGifs(),
+                builder: _buildBody,
+              ),
+            ))
           ],
         ),
       ),
@@ -135,18 +135,33 @@ class _MyHomePageState extends State<MyHomePage> {
         itemBuilder: (context, index) {
           if (index < snapshot.data["data"].length) {
             return GestureDetector(
-              child: Image.network(
-                  snapshot.data["data"][index]["images"]["preview_gif"]["url"],
-                  height: 400,
-                  fit: BoxFit.cover),
+              child: Stack(
+                children: <Widget>[
+                  Center(
+                    child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        strokeWidth: 5),
+                  ),
+                  FadeInImage.memoryNetwork(
+                    image: snapshot.data["data"][index]["images"]
+                        ["fixed_height"]["url"],
+                    height: 400,
+                    fit: BoxFit.cover,
+                    placeholder: kTransparentImage,
+                  ),
+                ],
+              ),
               onTap: () {
-                Navigator.push(context,
+                Navigator.push(
+                    context,
                     MaterialPageRoute(
-                      builder: (context) => MyGifPage(snapshot.data["data"][index]),
+                      builder: (context) =>
+                          MyGifPage(snapshot.data["data"][index]),
                     ));
               },
               onLongPress: () {
-                Share.share(snapshot.data["data"][index]["images"]["original"]["url"]);
+                Share.share(
+                    snapshot.data["data"][index]["images"]["original"]["url"]);
               },
             );
           } else {
