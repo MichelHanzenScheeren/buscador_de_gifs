@@ -12,6 +12,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   GiphyApi _giphyApi = GiphyApi();
+  TextEditingController _textController = TextEditingController();
 
   Future<Null> _refresh() async {
     setState(() {});
@@ -33,10 +34,23 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             TextField(
+              controller: _textController,
               decoration: InputDecoration(
                   labelText: "Pesquisar:",
                   labelStyle: TextStyle(color: Colors.white, fontSize: 15),
-                  border: OutlineInputBorder()),
+                  border: OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.clear, color: Colors.white),
+                    onPressed: () {
+                      if(_textController.text.isNotEmpty){
+                        _textController.clear();
+                        setState(() {
+                          _giphyApi.search("");
+                        });
+                      }
+                    },
+                  )
+              ),
               style: TextStyle(color: Colors.white, fontSize: 18),
               textAlign: TextAlign.center,
               onSubmitted: (text) {
