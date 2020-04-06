@@ -1,8 +1,7 @@
+import 'package:buscadordegifs/app/apiConnect/api.dart';
 import 'package:buscadordegifs/app/gifPage/myGifPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:share/share.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -12,20 +11,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _search = "";
-  int _offset = 0;
-
-  Future<Map> _getGifs() async {
-    http.Response response;
-    if (_search.isEmpty) {
-      response = await http.get(
-          "https://api.giphy.com/v1/gifs/trending?api_key=MHNHi4nQy2AEQfeW23BVysMSNRBzecCj&limit=19&offset=$_offset&rating=G");
-    } else {
-      response = await http.get(
-          "https://api.giphy.com/v1/gifs/search?api_key=MHNHi4nQy2AEQfeW23BVysMSNRBzecCj&q=$_search&limit=19&offset=$_offset&rating=G&lang=pt");
-    }
-    return json.decode(response.body);
-  }
+  GiphyApi _giphyApi = GiphyApi();
 
   Future<Null> _refresh() async {
     setState(() {});
@@ -55,8 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
               textAlign: TextAlign.center,
               onSubmitted: (text) {
                 setState(() {
-                  _offset = 0;
-                  _search = text;
+                  _giphyApi.search(text);
                 });
               },
             ),
@@ -65,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: RefreshIndicator(
               onRefresh: _refresh,
               child: FutureBuilder(
-                future: _getGifs(),
+                future: _giphyApi.getData(),
                 builder: _buildBody,
               ),
             ))
@@ -175,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onTap: () {
                 setState(() {
-                  _offset += 19;
+                  _giphyApi.nextGifs();
                 });
               },
             );
