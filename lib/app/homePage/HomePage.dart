@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-Widget _buildBody(context, snapshot) {
+Widget _buildBody(BuildContext context, AsyncSnapshot snapshot) {
   switch(snapshot.connectionState) {
     case ConnectionState.waiting:
     case ConnectionState.none:
@@ -109,6 +109,19 @@ Widget _errorBody(){
   );
 }
 
-Widget _createGifTable(context, snapshot) {
-  return Container();
+Widget _createGifTable(BuildContext context, AsyncSnapshot snapshot) {
+  return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10
+      ),
+      itemCount: snapshot.data["data"].length,
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          child: Image.network(snapshot.data["data"][index]["images"]["fixed_height"]["url"],
+          height: 400, fit: BoxFit.fill),
+        );
+      }
+  );
 }
