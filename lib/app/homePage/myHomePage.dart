@@ -25,6 +25,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return json.decode(response.body);
   }
 
+  Future<Null> _refresh() async {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,10 +60,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Divider(),
             Expanded(
-              child: FutureBuilder(
-                future: _getGifs(),
-                builder: _buildBody,
-              ),
+              child: RefreshIndicator(
+                onRefresh: _refresh,
+                child: FutureBuilder(
+                  future: _getGifs(),
+                  builder: _buildBody,
+                ),
+              )
             )
           ],
         ),
