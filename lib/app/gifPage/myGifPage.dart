@@ -33,7 +33,7 @@ class MyGifPage extends StatelessWidget {
           ),
           Center(
               child: FadeInImage.memoryNetwork(
-            image: _gifData["images"]["original"]["url"],
+            image: _gifData["images"]["fixed_height"]["url"],
             height: 400,
             fit: BoxFit.cover,
             placeholder: kTransparentImage,

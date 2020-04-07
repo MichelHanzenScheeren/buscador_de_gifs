@@ -7,12 +7,12 @@ class GiphyApi {
 
   Future<Map> getData() async {
     http.Response response;
-    if (_search.isEmpty) {
-      response = await http.get(
-          "https://api.giphy.com/v1/gifs/trending?api_key=MHNHi4nQy2AEQfeW23BVysMSNRBzecCj&limit=19&offset=$_offset&rating=G");
-    } else {
+    if (_search.isNotEmpty) {
       response = await http.get(
           "https://api.giphy.com/v1/gifs/search?api_key=MHNHi4nQy2AEQfeW23BVysMSNRBzecCj&q=$_search&limit=19&offset=$_offset&rating=G&lang=pt");
+    } else {
+      response = await http.get(
+          "https://api.giphy.com/v1/gifs/trending?api_key=MHNHi4nQy2AEQfeW23BVysMSNRBzecCj&limit=19&offset=$_offset&rating=G");
     }
     return json.decode(response.body);
   }
