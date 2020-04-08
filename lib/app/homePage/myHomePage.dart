@@ -15,7 +15,9 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController _textController = TextEditingController();
 
   Future<Null> _refresh() async {
-    setState(() {});
+    setState(() {
+      _giphyApi.cleanData();
+    });
   }
 
   @override
@@ -142,7 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   FadeInImage.memoryNetwork(
                     image: snapshot.data["data"][index]["images"]
-                        ["fixed_height"]["url"],
+                        ["fixed_height"]["webp"],
                     height: 400,
                     fit: BoxFit.cover,
                     placeholder: kTransparentImage,
